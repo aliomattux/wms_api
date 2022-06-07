@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="product_no_preferred_bin_form" model="ir.ui.view">
+        <field name="name">Product No Preferred Bin Form</field>
+        <field name="model">product.no.preferred.bin</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <notebook>
+                    <page string="Products">
+                        <group>
+                            <field name="name" invisible="1" />
+                        </group>
+                        <group name="product_no_preferred_bin" string="Products with No Preferred Bin" readonly="1">
+                            <field name="products" nolabel="1" widget="one2many_list" readonly="1" style="pointer-events:none;">
+                                <tree readonly="1">
+                                    <field name="product" />
+                                    <field name="ddn" />
+                                </tree>
+                            </field>
+                        </group>
+                    </page>
+                </notebook>
+            </form>
+        </field>
+    </record>
+    <record id="action_product_no_preferred_bin" model="ir.actions.act_window">
+        <field name="name">Products without Preferred Bin</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">product.no.preferred.bin</field>
+        <field name="view_mode">form</field>
+    </record>
+    <menuitem id="menu_products_without_preferred_bin" parent="wms.menu_wms_reporting" action="action_product_no_preferred_bin" />
+</odoo>

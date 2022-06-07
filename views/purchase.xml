@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="purchase_order_search" model="ir.ui.view">
+        <field name="name">Purchase Order Search</field>
+        <field name="model">purchase.order</field>
+        <field name="arch" type="xml">
+            <search string="Name">
+                <field name="name" string="Purchase Order #" filter_domain="[('name','ilike',self)]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="purchase_order_tree" model="ir.ui.view">
+        <field name="name">Purchase Order Tree</field>
+        <field name="model">purchase.order</field>
+        <field name="arch" type="xml">
+            <tree string="Purchase Orders">
+                <field name="date" />
+                <field name="name"/>
+                <field name="vendor_name" />
+                <field name="receive_by" />
+            </tree>
+        </field>
+    </record>
+    <record id="view_purchase_order_form" model="ir.ui.view">
+        <field name="name">purchase.order.form</field>
+        <field name="model">purchase.order</field>
+        <field eval="12" name="priority"/>
+        <field name="arch" type="xml">
+            <form string="Transfer" readonly="1">
+                <header>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="vendor_name" readonly="1"/> 
+                        </group>
+                        <group>
+                            <field name="date" readonly="1" />
+                            <field name="receive_by" readonly="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="ops_notes" readonly="1"/>
+                    </group>
+                    <notebook>
+                        <page string="Lines" name="lines">
+                            <field name="lines" mode="tree" readonly="1">
+                                <tree>
+                                    <field name="product" />
+                                    <field name="description" />
+                                    <field name="options" />
+                                    <field name="qty" />
+                                    <field name="qty_received" />
+                                    <field name="qty_remaining" />
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Additional Info" name="extra">
+                            <group>
+                                <group string="Other Information" name="other_infos">
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="purchase_order_action" model="ir.actions.act_window">
+        <field name="name">Purchase Orders</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">purchase.order</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="purchase_order_tree"/>
+    </record>
+
+    <menuitem id="menu_purchase_order" parent="menu_wms_receiving" action="purchase_order_action" sequence="10"/>
+</odoo>

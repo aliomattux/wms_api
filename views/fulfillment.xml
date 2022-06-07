@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="stock_fulfillment_search" model="ir.ui.view">
+        <field name="name">Fulfillment Search</field>
+        <field name="model">stock.fulfillment</field>
+        <field name="arch" type="xml">
+            <search string="Name">
+                <field name="name" string="Fulfillment #" filter_domain="[('name','ilike',self)]"/>
+                <filter string="New" name="new"
+                    domain="[('status', '=', 'new')]"/>
+                <filter string="Printed" name="printed"
+                    domain="[('status', '=', 'printed')]"/>
+                <filter string="Shipped Today" name="shipped_today"
+                    domain="[('date_done', '&gt;=', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter string="Exception" name="exception"
+                    domain="[('status', '=', 'exception')]"/>
+            </search>
+        </field>
+    </record>
+    <record id="stock_fulfillment_exception_search" model="ir.ui.view">
+        <field name="name">Fulfillment Exception Search</field>
+        <field name="model">stock.fulfillment</field>
+        <field name="arch" type="xml">
+            <search string="Name">
+                <field name="name" string="Fulfillment #" filter_domain="[('name','ilike',self)]"/>
+                <filter string="Not Acknowledged" name="not_acknowledged"
+                    domain="[('exception_acknowledged', '!=', True)]"/>
+                <filter string="Acknowledged" name="acknowledged"
+                    domain="[('exception_acknowledged', '=', 'True')]"/>
+                <field name="exception_reason" string="Exception Reason" filter_domain="[('exception_reason','ilike',self)]"/>
+            </search>
+        </field>
+    </record>
+    <record id="stock_fulfillment_tree" model="ir.ui.view">
+        <field name="name">Fulfillment Tree</field>
+        <field name="model">stock.fulfillment</field>
+        <field name="arch" type="xml">
+            <tree string="Fulfillments">
+                <field name="date" />
+                <field name="name"/>
+                <field name="customer_name" />
+                <field name="shipping_method" />
+                <field name="shipping_state" />
+                <field name="shipping_zip" />
+                <field name="sale_order" />
+                <field name="cubic_feet" />
+                <field name="total_weight" />
+                <field name="printed_date" />
+                <field name="status" />
+            </tree>
+        </field>
+    </record>
+    <record id="stock_fulfillment_exception_action_tree" model="ir.ui.view">
+        <field name="name">Fulfillment Exception Action Tree</field>
+        <field name="model">stock.fulfillment</field>
+        <field name="arch" type="xml">
+            <tree string="Fulfillments" editable="top">
+                <field name="date" readonly="1"/>
+                <field name="name" readonly="1"/>
+                <field name="shipping_method" readonly="1"/>
+                <field name="shipping_state" readonly="1"/>
+                <field name="shipping_address_1" readonly="1"/>
+                <field name="sale_order" readonly="1"/>
+                <field name="printed_date" readonly="1"/>
+                <field name="status" readonly="1"/>
+                <field name="exception_reason" readonly="1"/>
+                <field name="exception_acknowledged" invisible="1"/>
+                <button name="acknowledge_fulfillment" icon="fa-check-circle" type="object" />
+            </tree>
+        </field>
+    </record>
+    <record id="stock_fulfillment_exception_all_tree" model="ir.ui.view">
+        <field name="name">Fulfillment Exception All Tree</field>
+        <field name="model">stock.fulfillment</field>
+        <field name="arch" type="xml">
+            <tree string="Fulfillments">
+                <field name="date"/>
+                <field name="name"/>
+                <field name="shipping_method"/>
+                <field name="shipping_state"/>
+                <field name="sale_order"/>
+                <field name="printed_date"/>
+                <field name="status"/>
+                <field name="exception_reason"/>
+                <field name="exception_acknowledged" string="Acknowledged"/>
+                <field name="exception_acknowledged_by" string="Ack. By"/>
+                <field name="exception_acknowledged_datetime" string="Ack. Date/Time"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_stock_fulfillment_form" model="ir.ui.view">
+        <field name="name">stock.fulfillment.form</field>
+        <field name="model">stock.fulfillment</field>
+        <field eval="12" name="priority"/>
+        <field name="arch" type="xml">
+            <form string="Transfer" readonly="1">
+                <header>
+                    <field name="status" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Customer Info">
+                            <field name="customer_name" readonly="1" />
+                            <field name="shipping_attention" readonly="1"/>
+                            <field name="shipping_addressee" readonly="1"/>
+                            <field name="shipping_address_1" readonly="1"/>
+                            <field name="shipping_address_2" readonly="1"/>
+                            <field name="shipping_city" readonly="1"/>
+                            <field name="shipping_state" readonly="1"/>
+                            <field name="shipping_zip" readonly="1"/> 
+                        </group>
+                        <group string="Order Info">
+                            <field name="date" readonly="1" />
+                            <field name="sale_order" readonly="1" />
+                            <field name="printed_date" readonly="1"/>
+                            <field name="shipping_method" readonly="1"/>
+                            <field name="netsuite_deleted" readonly="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Characteristics">
+                            <field name="cubic_feet" />
+                            <field name="total_weight" />
+                        </group>
+                        <group string="Shipping Data">
+                            <field name="date_done" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Lines" name="lines">
+                            <field name="lines" mode="tree">
+                                <tree>
+                                    <field name="product" />
+                                    <field name="sku" />
+                                    <field name="ddn"/>
+                                    <field name="cubic_feet" />
+                                    <field name="bin_name" />
+                                    <field name="bin_qty" />
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Additional Info" name="extra">
+                            <group>
+                                <group string="Other Information" name="other_infos">
+                                    <field name="packingslip_notes" readonly="1"/>
+                                </group>
+                                <group>
+                                    <field name="netsuite_last_modified" readonly="1"/>
+                                    <field name="sale_order_internalid" readonly="1"/>
+                                    <field name="netsuite_status" readonly="1"/>
+                                </group>
+                                <group>
+                                    <field name="location" readonly="1"/>
+                                    <field name="support_order" />
+                                    <field name="special_order_fulfillment" />
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="stock_fulfillment_action" model="ir.actions.act_window">
+        <field name="name">All Fulfillments</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">stock.fulfillment</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="stock_fulfillment_tree"/>
+        <field name="search_view_id" ref="stock_fulfillment_search" />
+    </record>
+    <record id="stock_fulfillment_exception_action_action" model="ir.actions.act_window">
+        <field name="name">Exception Action Fulfillments</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">stock.fulfillment</field>
+        <field name="view_mode">tree</field>
+        <field name="context">{}</field>
+        <field name="domain">[('status', '=', 'exception')]</field>
+        <field name="view_id" ref="stock_fulfillment_exception_action_tree" />
+        <field name="search_view_id" ref="stock_fulfillment_exception_search"/>
+    </record>
+    <record id="stock_fulfillment_exception_all_action" model="ir.actions.act_window">
+        <field name="name">Exception Fulfillments</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">stock.fulfillment</field>
+        <field name="context">{}</field>
+        <field name="domain">[('exception_reason', '!=', False)]</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="stock_fulfillment_exception_all_tree" />
+        <field name="search_view_id" ref="stock_fulfillment_exception_search"/>
+    </record>
+    <menuitem id="menu_fulfillment" parent="menu_wms_fulfillment" action="stock_fulfillment_action" sequence="10"/>
+    <menuitem id="menu_exception_all_fulfillment" parent="menu_wms_reporting" action="stock_fulfillment_exception_all_action" sequence="100"/>
+</odoo>

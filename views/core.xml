@@ -1,0 +1,8 @@
+<odoo>
+    <menuitem name="WM" id="menu_wms" sequence="10"/>
+    <menuitem name="Fulfillment" id="menu_wms_fulfillment" parent="menu_wms" sequence="20" />
+    <menuitem name="Receiving" id="menu_wms_receiving" parent="menu_wms" sequence="30"/>
+    <menuitem name="Movement" id="menu_wms_movement" parent="menu_wms" sequence="40" />
+    <menuitem name="Reporting" id="menu_wms_reporting" parent="menu_wms" sequence="50" />
+    <menuitem name="Config" id="menu_wms_management" parent="menu_wms" sequence="100" />
+</odoo>

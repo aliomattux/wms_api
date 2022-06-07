@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <record id="bins_tree" model="ir.ui.view">
+            <field name="name">Bins Tree</field>
+            <field name="model">bin</field>
+            <field name="arch" type="xml">
+                <tree string="Bin">
+                    <field name="name"/>
+                    <field name="bin_type" />
+                </tree>
+            </field>
+        </record>
+        <record id="bins_form" model="ir.ui.view">
+            <field name="name">bin.form</field>
+            <field name="model">bin</field>
+            <field name="arch" type="xml">
+                <form string="Transfer" readonly="1">
+                    <header>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <field name="bin_type" />
+                        </group>
+                     </sheet>
+                 </form>
+             </field>
+        </record>
+        <record id="bins_action" model="ir.actions.act_window">
+            <field name="name">Bins</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">bin</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="bins_tree"/>
+        </record>
+
+        <menuitem action="bins_action"
+            id="menu_bins_action"
+            parent="menu_wms_management" sequence="1" />
+</odoo>

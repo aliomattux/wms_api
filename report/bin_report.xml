@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+<record id="paperformat_bin_labels" model="report.paperformat">
+    <field name="name">Bins</field>
+    <field name="default" eval="True"/>
+    <field name="format">custom</field>
+    <field name="page_height">200</field>
+    <field name="page_width">100</field>
+    <field name="orientation">Landscape</field>
+    <field name="margin_top">0</field>
+    <field name="margin_bottom">0</field>
+    <field name="margin_left">0</field>
+    <field name="margin_right">0</field>
+    <field name="header_line" eval="False"/>
+    <field name="header_spacing">0</field>
+    <field name="dpi">32</field>
+</record>
+        <record id="action_report_bin" model="ir.actions.report">
+            <field name="name">Bin</field>
+            <field name="model">bin</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">wms.report_bin</field>
+            <field name="report_file">wms.report_bin</field>
+            <field name="print_report_name">(object.name)</field>
+            <field name="binding_model_id" ref="model_bin"/>
+            <field name="binding_type">report</field>
+        </record>
+        <record id="wms.action_report_bin" model="ir.actions.report">
+            <field name="paperformat_id" ref="wms.paperformat_bin_labels" />
+        </record>
+    </data>
+</odoo>
